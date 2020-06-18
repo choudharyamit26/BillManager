@@ -2,7 +2,7 @@
 
 This is a basic bill management application.This is made according to indian GST taxation system.
 
-First Create a Virtualenvironment
+First Create a Virtualenvironment<br>
 Activate the virtualenvironment
 
 Run "pip install -r requirements.txt"
