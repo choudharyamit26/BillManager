@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice No. &nbsp; {% for object in something %}
+        {{ object.date|date:"Y - Md"|upper }}-{{ object }}
+        {% endfor %}</title>
+</head>
+<body>
+<div class="box">
+    <div class="box-body">
+        <div class="row-12">
+            <div class="col-12">
+                <div><h6 style="margin-left:560px;margin-bottom:-70px;"> (ORIGINAL FOR RECIPIENT)</h6>
+                    <h6><strong></strong></h6>
+                    <h3 style="text-align:center;color:black;"><strong>Tax Invoice</strong></h3></div>
+                <table style="border: 1px solid black;" cellpadding="5">
+                    <tr>
+                        <td rowspan="4">
+                            <h1 style="color:black;font-size:18px;">
+                                <strong>Amico Computer Solution</strong>
+                            </h1>
+                            <h6 style="">ADD-B-255,HK.NO-265, Gali No-2,Rajveer Colony,
+                                Delhi-110096</h6>
+                            <h6>Amit Choudhary : 7678689353</h6>
+                            <h6>GSTIN/UIN: 07ABNFA2966K1ZZ</h6>
+                            <h6>E-mail :- Amico_Computer@yahoo.com </h6>
+                        </td>
+                        <td ><strong>Invoice No. </strong></td>
+                        <td >Dated</td>
+                    </tr>
+                    <tr>
+                        <td><strong>{% for object in something %}
+                            {{ object.date|date:"Y - Md"|upper }}-{{ object }}
+                            {% endfor %}</strong></td>
+                        <td ><strong>{{ bill.date }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Delivery Note</td>
+                        <td>Mode/Terms of Payment</td>
+                    </tr>
+                    <tr>
+                        <td>Supplier's Ref</td>
+                        <td>Other Reference</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3">
+                            Buyer : &nbsp;&nbsp;<strong>{{ bill.buyer }}</strong><br><br>
+                            <h6>GSTIN/UIN : &nbsp;&nbsp; {{ bill.buyer_gst }}</h6>
+                            <h6>State Name: &nbsp;&nbsp; Delhi, Code: 07</h6>
+                        </td>
+                        <td scope="col" style="color:black;">Dispatch Document No.</td>
+                        <td scope="col" style="color:black;">Delivery Note Date</td>
+                    </tr>
+                    <tr>
+                        <td style="color:black;">Dispatched through</td>
+                        <td style="color:black;">Destination</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Terms of Delivery</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <div class="row-12">
+                <div class="col-12">
+                    <table style="border: 1px solid black;" cellpadding="3">
+                        <tr>
+                            <th style="text-align:center;">Sr. No</th>
+                            <th style="text-align:center;">Description of Goods</th>
+                            <th style="text-align:center;">HSN/SAC</th>
+                            <th style="text-align:center;">Quantity</th>
+                            <th style="text-align:center;">Rate/Unit</th>
+                            <th style="text-align:center;">Amount</th>
+                        </tr>
+                        {% for item in bill.items.all %}
+                        <tr>
+                            <td style="text-align:center;">{{ forloop.counter }}</td>
+                            <td style="text-align:center;"> {{ item.product }}
+                            </td>
+                            <td style="text-align:center;">{{ item.hsn_code }}
+                            </td>
+                            <td style="text-align:center;">{{ item.quantity }}
+                            </td>
+                            <td style="text-align:center;">{{ item.price|floatformat:2 }}
+                            </td>
+                            <td style="text-align:center;">{{ item.get_total_item_price|floatformat:2 }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="4"><p>Payment TO Be Made To Amico Computer<br>
+                                Bank Account Details for Transaction<br>
+                                <h6><b>Bank Name : CENTRAL BANK OF INDIA </b></h6>
+                                <h6><b>Account Number : 3730894879</b></h6>
+                                <h6><b>IFS Code : CBIN0280287 </b></h6>
+                                <h4><b>Add : 00287,Bhagirath Palace, Chandani Chowk, Delhi-110001</b></h4>
+                                </p></td>
+                            <td style="text-align:center;"><br>Sub-total<br><br><br>
+                                    <b>CGST<br>
+                                    SGST</b>
+                            </td>
+                            <td style="text-align:center;"><br>
+                                {{ bill.get_sub_total }}
+                                <br><br><br>
+                                <b>{{ bill.get_c_gst_amount|floatformat:2 }}<br>
+                                    {{ bill.get_c_gst_amount|floatformat:2  }}</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"><br></td>
+                            <td style="background-color:grey;color:black;text-align:center;">Total</td>
+                            <td style="background-color:grey;color:black;text-align:center;">
+                                {{ bill.final_price|floatformat:2  }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">Amount Chargeable ( in words )<br>
+                                <strong>INR - {{ bill.gst_in_word }}</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th rowspan="2">HSN/SAC</th>
+                            <th rowspan="2">Taxable Value</th>
+                            <th colspan="2">Central Tax</th>
+                            <th colspan="2">State Tax</th>
+                        </tr>
+                        <tr>
+                            <td>Rate</td>
+                            <td>Amount</td>
+                            <td>Rate</td>
+                            <td>Amount</td>
+                        </tr>
+                        <tr>
+                            <td>{{ bill.hsn_code}}</td>
+                            <td>{{ bill.get_sub_total|floatformat:2 }}</td>
+                            <!-- <td>{{ bill.get_c_gst }}%</td> -->
+                            <td>9%</td>
+                            <td>{{ bill.get_c_gst_amount|floatformat:2  }}</td>
+                            <!-- <td>{{ bill.get_c_gst }}%</td> -->
+                            <td>9%</td>
+                            <td>{{ bill.get_c_gst_amount|floatformat:2  }}</td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td>{{ bill.get_sub_total|floatformat:2 }}</td>
+                            <td></td>
+                            <td>{{ bill.get_c_gst_amount|floatformat:2  }}</td>
+                            <td></td>
+                            <td>{{ bill.get_c_gst_amount|floatformat:2  }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"><b>Taxable amount:{{ bill.amount_in_word }}</b><br>
+                                <p>
+                                    Declaration:<br>
+                                    We declare that this invoice shows the<br>
+                                    actual price of the goods described and<br>
+                                    that all particulars are true and correct.
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="text-align:center;margin-top:2px;"><b>Note: Interest @3% day will be
+                                charged, if bill is not paid within 15 days</b></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

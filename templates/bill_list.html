@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="content">
+    <div class="box">
+        <div class="box-header float-right mr-5">
+            <a class="btn btn-success mb-5 mt-2 ml-5" href="{% url 'src:bill-download' %}">Export to
+                CSV</a>
+            <form class="search-form col-sm-4 float-right mt-2" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input class="form-control" name="qs" placeholder="Search here.." type="search" />
+                    <button class="input-group-addon">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </form>
+            <a href="{% url 'src:bill' %}" class="btn btn-success float-right mb-5 mt-2">New Bill</a>
+            <a href="{% url 'src:bill-filter' %}" class="btn btn-secondary mr-5 mb-5 mt-2 float-right">Filter Data</a>
+            <div class="box-body">
+                <div class="row-12 ">
+                    <div class="col-12">
+                        <table class="table table-striped- table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Sr. No</th>
+                                    <th>Invoice No</th>
+                                    <th>Buyer</th>
+                                    <th>Buyer Gst</th>
+                                    <th>Buyer Address</th>
+                                    <th>Date</th>
+                                    <th>Edit</th>
+                                    <th>View</th>
+                                    <th>Delete</th>
+                                    <th>PDF</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if search %}
+                                {% for object in search %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>
+                                        {{ object.date|date:"Y - Md"|upper }}-{{ object }}
+                                    </td>
+                                    <td>{{ object.buyer }}</td>
+                                    <td>{{ object.buyer_gst }}</td>
+                                    <td>{{ object.buyer_address }}</td>
+                                    <td>{{ object.date|date:"Y-m-d" }}</td>
+                                    <td>
+                                        <a href="{% url 'src:bill-update' object.id %}" class="fa fa-pencil"></a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'src:bill-detail' object.id %}" class="fa fa-eye"></a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'src:bill-delete' object.id %}" class="fa fa-trash"></a>
+                                    </td>
+                                    <td><a href="{% url 'src:pdf' object.id %}" target="_blank">PDF</a></td>
+
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                {% for object in formlist %}
+                                <tr>
+                                    <td>
+                                        {{ forloop.counter }}
+                                    </td>
+                                    <td>
+                                        {{ object.date|date:"Y - Md"|upper }}-{{ object }}
+                                    </td>
+                                    <td>
+                                        {{ object.buyer }}
+                                    </td>
+                                    <td>
+                                        {{ object.buyer_gst }}
+                                    </td>
+                                    <td>
+                                        {{ object.buyer_address }}
+                                    </td>
+                                    <td>
+                                        {{ object.date }}
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'src:bill-update' object.id %}" class="fa fa-pencil"></a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'src:bill-detail' object.id %}" class="fa fa-eye"></a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'src:bill-delete' object.id %}" class="fa fa-trash"></a>
+                                    </td>
+                                    <td><a href="{% url 'src:pdf' object.id %}" target="_blank">PDF</a></td>
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                        <div class="card-footer">
+                            <div class="text-right full-width pagination-container">
+                                <ul>
+                                    <li> {% if count == 0 or count == 1 %}
+                                        <b> <strong>Total</strong> {{ count }} </b> item
+                                        {% elif count %}
+                                        <b> <strong>Total</strong> {{ count }} </b> items
+                                        {% elif search_count == 0 or search_count == 1 %}
+                                        <b><strong>Total</strong> {{ search_count }} </b> item
+                                        {% elif search_count %}
+                                        <b><strong>Total</strong> {{ search_count }} </b> items
+                                        {% else %}
+                                        <b><strong>Total</strong> {{ search_count }}</b> item
+                                        {% endif%}
+                                    </li>
+                                </ul>
+
+                                <ul class="pagination">
+                                    {% if formlist.has_previous %}
+                                    <li class="page-item"><a aria-label="Previous" class="page-link"
+                                            href="?page={{ formlist.previous_page_number }}">«</a></li>
+                                    {% endif%}
+                                    {% if formlist.number|add:'-2' > 1 %}
+                                    <li class="page-item"><a class="page-link" href="?page=1">First Page</a></li>
+                                    {% endif %}
+                                    {% if formlist.number|add:'-3' > 1 %}
+                                    <li class="page-item"><a class="page-link"
+                                            href="?page={{ formlist.number|add:'-3' }}">&hellip;</a>
+                                    </li>
+                                    {% endif %}
+                                    {% for i in formlist.paginator.page_range %}
+                                    {% if formlist.number == i %}
+                                    <li class="page-item"><span>{{ i }} </span></li>
+                                    {% elif i > formlist.number|add:'-3' and i < formlist.number|add:'3' %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% if formlist.number|add:'3' < formlist.paginator.num_pages %}
+                                    <li class="page-item"><a class="page-link"
+                                            href="?page={{ formlist.number|add:'3' }}">&hellip;</a>
+                                    </li>
+                                    {% endif %}
+                                    {% if formlist.number|add:'2' < formlist.paginator.num_pages %}
+                                    <li class="page-item"><a class="page-link"
+                                            href="?page={{ formlist.paginator.num_pages }}">Last Page</a>
+                                    </li>
+                                    {% endif %}
+                                    {% if formlist.has_next %}
+                                    <li class="page-item"><a aria-label="Next" class="page-link"
+                                            href="?page={{ formlist.next_page_number }}">»</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+{% endblock content %}
+
+
+
+
+

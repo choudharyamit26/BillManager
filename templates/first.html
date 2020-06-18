@@ -1,0 +1,22 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Amico Computer Solution</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+</head>
+<body background="static/images/chip.jpg" style="background-size: cover;">
+<div class="row-md-10" style="margin-top:270px;margin-left:400px;">
+    <div class="col-md-4 ml-5">
+        <a href="{% url 'src:register' %}" class="btn btn-success" style="font-size: 65px;">SignUp</a>
+    </div>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <div class="col-md-4 " style="margin-left:330px;margin-top:-135px;">
+        <a href="{% url 'src:login' %}" class="btn btn-warning" style="font-size: 68px">Login</a>
+    </div>
+</div>
+</body>
+</html>

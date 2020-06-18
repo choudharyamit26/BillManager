@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+ <div id="myModal" class="modal" style="margin-top:100px;margin-left:400px;">
+        <!-- Modal content -->
+        <div class="modal-content" style="width:40%;">
+            <div class="modal-header ">
+                <span class="close" data-dismiss="modal">&times;</span>
+                <h2>Add Items To Bill</h2>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form method="POST" id="mymodalform">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="col-sm-4">Product</label>
+                            <select name="products">
+                                {% for object in product %}
+                                <option value="{{ object }}">{{ object }}</option>
+                                {% endfor %}
+                            </select><br>
+                            <label class="col-sm-4">Quantity</label>
+                            <input type="number" name="quantity"><br>
+                            <label class="col-sm-4">Price</label>
+                            <input type="number" name="price"><br>
+                            <label class="col-sm-4">GST</label>
+                            <select name="gst">
+                                <option>------</option>
+                                <option value="5%">5%</option>
+                                <option value="12%">12%</option>
+                                <option value="18%">18%</option>
+                                <option value="28%">28%</option>
+                            </select><br>
+                            <label class="col-sm-4">HSN COde</label>
+                            <select name="hsn_code">
+                                <option>------</option>
+                                <option value="8471">8471</option>
+                                <option value="8443">8443</option>
+                                <option value="8523">8523</option>
+                                <option value="8504">8504</option>
+                                <option value="8507">8507</option>
+                            </select><br>
+                            <button class="btn btn-success" type="submit">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block extra_script %}
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+
+$(document).on ('submit','#mymodalform',function(e){
+            e.preventDefault();
+            $.ajax({
+            type:'POST',
+            url:'/src:bill/',
+            data:{
+                product:('#product').val(),
+                quantity:('#quantity').val(),
+                price:('#price').val(),
+                gst:('#gst').val(),
+                hsncode:('#hsn_code').val(),
+
+            },
+            success:function(data){
+                console.log(data)
+            }
+            });
+});
+
+</script>
+{% endblock extra_script %}
+</body>
+</html>
