@@ -47,18 +47,18 @@ class RegisterView(CreateView):
         return render(self.request, 'register.html', {'form': form})
 
 
-class HomeView(TemplateView):
-    template_name = 'home.html'
+# class HomeView(TemplateView):
+#     template_name = 'home.html'
 
-    def home(self):
-        return render(self.request, 'home.html')
+#     def home(self):
+#         return render(self.request, 'home.html')
 
 
-class LandingView(TemplateView):
-    template_name = 'first.html'
+# class LandingView(TemplateView):
+#     template_name = 'first.html'
 
-    def home(self):
-        return render(self.request, 'first.html')
+#     def home(self):
+#         return render(self.request, 'first.html')
 
 
 class BillView(LoginRequiredMixin, CreateView):
