@@ -118,7 +118,7 @@ USE_TZ = True
 
 LOGIN_URL = 'src:login'
 LOGIN_REDIRECT_URL = 'src:bill-list'
-LOGOUT_REDIRECT_URL = 'src:landing-page'
+LOGOUT_REDIRECT_URL = 'src:login'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -130,9 +130,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-SERVER_EMAIL = 'xxxxxxxxxx@gmail.com'
+SERVER_EMAIL = 'XXXXXXXXXXX@gmail.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'xxxxxxxxxxx@gmail.com'
-EMAIL_HOST_PASSWORD = 'xxxxxxx'
+EMAIL_HOST_USER = 'XXXXXXXXXXX@gmail.com'
+EMAIL_HOST_PASSWORD = 'XXXXXXXXXXXXX'
