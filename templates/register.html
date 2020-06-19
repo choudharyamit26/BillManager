@@ -1,47 +1,48 @@
 {% load static %}
 {% load crispy_forms_tags %}
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Sign Up Page</title>
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap-extend.css' %}">
     <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}">
-    <!--    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">-->
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/master_style.css' %}">
     <link rel="stylesheet" href="{% static 'css/_all-skins.css' %}">
 </head>
+
 <body>
-<nav class="navbar navbar-expand-sm bg-info justify-content-center">
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" href="#" style="color:Red;font-size:30px;font-family:serif;">Amico GST Manager</a>
-        </li>
-    </ul>
-</nav>
-<section class="content">
-    <div class="box" style="width: 35rem;margin-left:350px;">
-        <div class="box-body">
-            <div class="row-12">
-                <div class="col-12">
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <button class="btn btn-primary" type="submit">Sign In</button>
-                        <small>Already have an account?</small>
-                        <strong><a href="{% url 'src:login' %}" style="color-blue;margin-left:10px;">Sign In</a></strong>
-                    </form>
+    <div class="modal-dialog mt-n5">
+        <div class="modal-content">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="modal-title text-center">
+                        <h2 class="mt-2">
+                            <strong>
+                                <div>Register</div>
+                            </strong>
+                        </h2>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="position-relative form-group">
+                                {{ form|crispy }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div style="margin-right: 20px;margin-left: 30px;margin-top: -30px;">
+                    <button class=" btn-lg btn btn-success float-left" type="submit">Sign Up</button>
+                    <a href="{% url 'src:login' %}" class="btn-lg btn btn-link float-right">Login</a>
+                </div>
+            </form>
         </div>
     </div>
-
-</section>
 </body>
+
 </html>
-
-
-
-
