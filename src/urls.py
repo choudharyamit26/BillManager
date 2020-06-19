@@ -3,8 +3,6 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import (RegisterView,
-                    HomeView,
-                    LandingView,
                     BillView,
                     ClientView,
                     ProductView,
@@ -26,9 +24,7 @@ from .views import (RegisterView,
 app_name = 'src'
 
 urlpatterns = [
-    path('', LandingView.as_view(), name='landing-page'),
     path('register/', RegisterView.as_view(), name='register'),
-    path('home/', HomeView.as_view(), name='home'),
     path('bill/', BillView.as_view(), name='bill'),
     path('client/', ClientView.as_view(), name='client'),
     path('product/', ProductView.as_view(), name='product'),
@@ -51,8 +47,8 @@ urlpatterns = [
     path('client-delete/<int:pk>/',
          ClientDeleteView.as_view(), name='client-delete'),
     path('bill-download/', BillDownloadView.as_view(), name='bill-download'),
-    path('bill-filter/',BillFilterView.as_view(),name='bill-filter'),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('bill-filter/', BillFilterView.as_view(), name='bill-filter'),
+    path('', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
     path('change-password/',
          auth_views.PasswordChangeView.as_view(

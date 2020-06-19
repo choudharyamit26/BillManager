@@ -47,20 +47,6 @@ class RegisterView(CreateView):
         return render(self.request, 'register.html', {'form': form})
 
 
-# class HomeView(TemplateView):
-#     template_name = 'home.html'
-
-#     def home(self):
-#         return render(self.request, 'home.html')
-
-
-# class LandingView(TemplateView):
-#     template_name = 'first.html'
-
-#     def home(self):
-#         return render(self.request, 'first.html')
-
-
 class BillView(LoginRequiredMixin, CreateView):
     model = Bill
     template_name = 'bill.html'
@@ -249,9 +235,7 @@ class BillUpdateView(LoginRequiredMixin, UpdateView):
     form_class = BillForm
     success_url = reverse_lazy('src:bill-list')
 
-    
-
-    def get_object(self,queryset=None):
+    def get_object(self, queryset=None):
         if queryset is None:
             queryset = self.get_queryset().order_by('id')
         pk = self.kwargs.get(self.pk_url_kwarg)
