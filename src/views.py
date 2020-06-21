@@ -52,10 +52,10 @@ class BillView(LoginRequiredMixin, CreateView):
     template_name = 'bill.html'
     form_class = BillForm
 
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs['user'] = self.request.user
-    #     return kwargs
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
