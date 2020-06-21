@@ -52,11 +52,18 @@ class BillView(LoginRequiredMixin, CreateView):
     template_name = 'bill.html'
     form_class = BillForm
 
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs['user'] = self.request.user
+    #     return kwargs
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context['formset'] = BillFormSet(queryset=OrderItem.objects.none())
-        context['billform'] = BillForm()
-        context['product'] = Product.objects.all()
+        for form in context['formset']:
+            form.fields['product'].queryset = Product.objects.filter(user=self.request.user)
+        context['billform'] = BillForm(user=self.request.user)
+        context['product'] = Product.objects.filter(user=self.request.user)
         return context
 
     def form_valid(self, form):
@@ -89,6 +96,7 @@ class BillView(LoginRequiredMixin, CreateView):
         return redirect(bill)
 
     def form_invalid(self, form):
+        print('Form Invalid ---->>> ', self.request)
         messages.error(self.request, 'Some error occured please check.')
         return self.render_to_response(self.get_context_data(form=form))
 
@@ -235,14 +243,14 @@ class BillUpdateView(LoginRequiredMixin, UpdateView):
     form_class = BillForm
     success_url = reverse_lazy('src:bill-list')
 
-    def get_object(self, queryset=None):
-        if queryset is None:
-            queryset = self.get_queryset().order_by('id')
-        pk = self.kwargs.get(self.pk_url_kwarg)
-        if pk is not None:
-            queryset = queryset.filter(pk=pk)
-        obj = queryset.get()
-        return obj
+    # def get_object(self, queryset=None):
+    #     if queryset is None:
+    #         queryset = self.get_queryset().order_by('id')
+    #     pk = self.kwargs.get(self.pk_url_kwarg)
+    #     if pk is not None:
+    #         queryset = queryset.filter(pk=pk)
+    #     obj = queryset.get()
+    #     return obj
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -335,3 +343,4 @@ class BillDownloadView(LoginRequiredMixin, View):
         for bill in bills:
             writer.writerow(bill)
         return response
+
